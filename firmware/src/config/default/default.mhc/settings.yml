@@ -1,0 +1,14 @@
+format_version: v1.0
+configName: default
+folderName: DC120_NO_APP_1
+frameworkPath: Z:\AMIT_WORKSPACE\SAM51\Microchip
+processor: ATSAME51N20A
+projectName: DC120_NO_APP_1
+settings:
+  PackageFilter: ''
+  FORCE_OPTIMIZATION: 'false'
+  GENERATE_BACKUP: 'true'
+  TRUSTZONE: 'false'
+  CMSISPath: dev_packs\arm\CMSIS\5.8.0
+  MERGE_STRATEGY: USER_ALL
+  DFPPath: dev_packs\Microchip\SAME51_DFP\3.7.242\atdf\ATSAME51N20A.atdf
