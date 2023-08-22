@@ -30,8 +30,8 @@ Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,D
 35,PB13,,Available,,,,,,NORMAL
 36,PB14,,Available,,,,,,NORMAL
 37,PB15,,Available,,,,,,NORMAL
-40,PC10,,Available,,,,,,NORMAL
-41,PC11,,Available,,,,,,NORMAL
+40,PC10,,EIC_EXTINT10,Digital,High Impedance,n/a,No,No,NORMAL
+41,PC11,,EIC_EXTINT11,Digital,High Impedance,n/a,No,No,NORMAL
 42,PC12,,Available,,,,,,NORMAL
 43,PC13,,Available,,,,,,NORMAL
 44,PC14,,Available,,,,,,NORMAL
