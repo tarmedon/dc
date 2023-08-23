@@ -26,6 +26,9 @@
 #define BTL_TRIGGER_PATTERN (0x5048434DUL)  //Bootloadaer trigger pattern.
 #define BTL_TRIGGER_RAM_START  0x20000000U  //Bootloader RAM start address.
 
+/**Basic defines for CODE**/
+#define OK                  0
+#define NOT_OK              1
 
 /**Defines for ESP**/
 #define ESP_BUFFER_LENGTH   256             //Maximum buffer length of esp tx data
@@ -78,7 +81,10 @@ HMI_SEND_Q   *hmi_q;
 static int MACHINE_STATE = PHASE_CHECK_STATE;       //VARIABLE to store the state of System.
 static uint32_t *ramStart = (uint32_t *)BTL_TRIGGER_RAM_START;  //VARIABLE to store the bootloader trigger pattern.
 long tick1,tick2=0;                                 //Variable to store Time at which phase1 & phase 2 interuppt occurs.
-
+static uint8_t Emergency_button_t = OK;             //Flag for Emergency Button.
+static uint8_t Imd_t = OK;                          //Flag for IMD.
+static uint8_t Smoke_Detection_t = OK;              //Flag for Smoke Detection.
+static uint8_t Limit_switch_t = OK;                 //Flag for limit switch.
 
 
 
@@ -112,6 +118,11 @@ TaskHandle_t MACHINE_STATEHandle;                   //MACHINE STATE HANDLE
 /**PHASE DETECTION CALLBACK FUNCTIONS**/
 static void PHASE1_NOTIFICATION(uintptr_t context); //Callback function for phase 1 detection.   
 static void PHASE2_NOTIFICATION(uintptr_t context); //Callback function for phase 2 detection.
+static void EMERGENCY_BTN(uintptr_t context);       //Callback function for Emergency Button.
+static void IMD_NOTIFICATION(uintptr_t context);    //Callback function for IMD.
+static void SMOKE_DETECTION(uintptr_t context);     //Callback function for smoke detection.
+static void LIMIT_SWITCH(uintptr_t context);        //Callback function for Limit switch.
+
 
 /**COMMON TASKS FUNCTION**/
 void StartDefaultTask(void * argument);             //Default TASK Function
@@ -156,6 +167,11 @@ int main ( void )
     /**REGISTERING GPIO/EIC CALLBACKS**/
     EIC_CallbackRegister(EIC_PIN_10,PHASE1_NOTIFICATION, 0);//Registered Phase1 GPIO input interuppt Callback
     EIC_CallbackRegister(EIC_PIN_11,PHASE2_NOTIFICATION, 0);//Registered Phase2 GPIO input interuppt Callback
+    EIC_CallbackRegister(EIC_PIN_1,EMERGENCY_BTN,0);        //Registered Emergency button GPIO input interuppt Callback
+    EIC_CallbackRegister(EIC_PIN_2,EMERGENCY_BTN,0);        //Registered Emergency button GPIO input interuppt Callback
+    EIC_CallbackRegister(EIC_PIN_7,IMD_NOTIFICATION,0);     //Registered IMD GPIO input interuppt Callback
+    EIC_CallbackRegister(EIC_PIN_8,SMOKE_DETECTION,0);      //Registered SMOKE detection GPIO input interuppt Callback
+    EIC_CallbackRegister(EIC_PIN_9,LIMIT_SWITCH,0);         //Registered LIMIT Switch GPIO input intruppt callback
     
     /**QUEUES CREATIONS**/
     ESP_QUEUE = xQueueCreate(1, sizeof(ESP_SEND_Q));        //ESP QUEUE CREATION
@@ -240,11 +256,61 @@ static void PHASE2_NOTIFICATION(uintptr_t context)
 //    printf("phase 2 = %ld\r\n",tick2);
 }
 
+/**CALLBACK FUNCTION FOR EMERGENCY BUTTON**/
+static void EMERGENCY_BTN(uintptr_t context)
+{
+    //TODO : Notify to esp, HMI & change state of SYSTEM by suspending requried task and changig machine state. Also change LED status
+    printf("EMERGENCY BUTTON PRESSED\r\n");
+    if(EMERGENCY_BUT_Get())                     //Condition to check if Emergency button is pressed HIGH or LOW
+    {
+        Emergency_button_t = NOT_OK;            //Setting emergency Button Flag to NOT_OK
+        printf("BUTTON HIGH\r\n");
+    }
+    else
+    {
+       Emergency_button_t = OK;                 //Setting emergency Button Flag to OK
+       printf("BUTTON LOW\r\n");
+    }
+}
+
+/**CALLBACK FUNCTION FOR IMD**/
+static void IMD_NOTIFICATION(uintptr_t context)
+{
+    //TODO : Notify to esp, HMI , PLC and change system state.
+    printf("IMD HIGH\r\n");
+    Imd_t = NOT_OK;
+}
+
+/**CALLBACK FUNCTION FOR SMOKE DETECTION**/
+static void SMOKE_DETECTION(uintptr_t context)
+{
+    //TODO : Notify to esp, HMI & change state of SYSTEM by suspending requried task and changig machine state. Also change LED status
+    printf("SMOKE DETECTED\r\n");  
+    Smoke_Detection_t = OK;
+}
+
+/**CALLBACK FUNCTION FOR LIMIT SWITCH**/
+static void LIMIT_SWITCH(uintptr_t context)
+{
+    //TODO : Notify to esp, HMI & change state of SYSTEM by suspending requried task and changig machine state. Also change LED status
+    printf("LIMIT SWITCH PRESSED\r\n");
+    if(LIMIT_BTN_Get())                         //Condition to check it if LIMIT switch pressed HIGH or lOW
+    {
+        Limit_switch_t = OK;                    //Setting Limit Switch Button to OK.
+        printf("GATE CLOSED\r\n");
+    }
+    else
+    {
+        Limit_switch_t = NOT_OK;                //Setting Limit Switch Button to NOT_OK.
+        printf("GATE OPEN\r\n");
+    }
+}
+
 
 /**Function for default TASK**/
 void StartDefaultTask(void * argument)
 {
-    static int count =0;                                        //Variable to store task count
+    static int count =0;                          //Variable to store task count
     uint32_t difference1 =0;                      //Variables to store difference between recorded time
     while(1)
     {
@@ -264,10 +330,9 @@ void StartDefaultTask(void * argument)
             }
             count = 0;                          //Resetting count variable
         }
-        count++;                                //incrementing count variable
-        if(count >10)                           //Resetting count variable
+        if(MACHINE_STATE == PHASE_CHECK_STATE)
         {
-            count =0;
+            count++;                            //incrementing count variable
         }
     vTaskDelay(1000);
     }
@@ -300,17 +365,17 @@ void StartESP_RECEIVETask(void * argument)
     while(1)
     {
 
-     if(ESP_RX_DATA[0] == 0x61)
+     if(ESP_RX_DATA[0] == 0x61)                 //Checking condition if data received from esp is aa to goto to bootloader
     {
-            ramStart[0] = BTL_TRIGGER_PATTERN;
-            ramStart[1] = BTL_TRIGGER_PATTERN;
-            ramStart[2] = BTL_TRIGGER_PATTERN;
-            ramStart[3] = BTL_TRIGGER_PATTERN;
+            ramStart[0] = BTL_TRIGGER_PATTERN;  //Storing bootloader trigger pattern in starting of ram address.
+            ramStart[1] = BTL_TRIGGER_PATTERN;  //Storing bootloader trigger pattern in starting of ram address.
+            ramStart[2] = BTL_TRIGGER_PATTERN;  //Storing bootloader trigger pattern in starting of ram address.
+            ramStart[3] = BTL_TRIGGER_PATTERN;  //Storing bootloader trigger pattern in starting of ram address.
             //NVIC_SystemReset();
     }
-    SERCOM7_USART_Read(ESP_RX_DATA, ESP_RECEIVING_SIZE);
-    vTaskSuspend(ESP_RECEIVE_TaskHandle);
-    vTaskDelay(1000);
+    SERCOM7_USART_Read(ESP_RX_DATA, ESP_RECEIVING_SIZE);    //Enabling SERCOM7 read intruppt.
+    vTaskSuspend(ESP_RECEIVE_TaskHandle);       //Suspending receiveing task.
+    vTaskDelay(1);
     }
 }
 

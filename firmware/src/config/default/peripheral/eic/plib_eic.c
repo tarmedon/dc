@@ -83,17 +83,17 @@ void EIC_Initialize (void)
 
     /* Interrupt sense type and filter control for EXTINT channels 0 to 7*/
     EIC_REGS->EIC_CONFIG[0] =  EIC_CONFIG_SENSE0_NONE  |
-                              EIC_CONFIG_SENSE1_NONE  |
-                              EIC_CONFIG_SENSE2_NONE  |
+                              EIC_CONFIG_SENSE1_BOTH  |
+                              EIC_CONFIG_SENSE2_BOTH  |
                               EIC_CONFIG_SENSE3_NONE  |
                               EIC_CONFIG_SENSE4_NONE  |
                               EIC_CONFIG_SENSE5_NONE  |
                               EIC_CONFIG_SENSE6_NONE  |
-                              EIC_CONFIG_SENSE7_NONE  ;
+                              EIC_CONFIG_SENSE7_RISE  ;
 
     /* Interrupt sense type and filter control for EXTINT channels 8 to 15 */
-    EIC_REGS->EIC_CONFIG[1] =  EIC_CONFIG_SENSE0_NONE 
-         |  EIC_CONFIG_SENSE1_NONE  
+    EIC_REGS->EIC_CONFIG[1] =  EIC_CONFIG_SENSE0_FALL 
+         |  EIC_CONFIG_SENSE1_BOTH  
          |  EIC_CONFIG_SENSE2_RISE  
          |  EIC_CONFIG_SENSE3_RISE  
          |  EIC_CONFIG_SENSE4_NONE  
@@ -107,19 +107,19 @@ void EIC_Initialize (void)
 
 
     /* External Interrupt enable*/
-    EIC_REGS->EIC_INTENSET = 0xc00U;
+    EIC_REGS->EIC_INTENSET = 0xf86U;
 
     /* Callbacks for enabled interrupts */
     eicCallbackObject[0].eicPinNo = EIC_PIN_MAX;
-    eicCallbackObject[1].eicPinNo = EIC_PIN_MAX;
-    eicCallbackObject[2].eicPinNo = EIC_PIN_MAX;
+    eicCallbackObject[1].eicPinNo = EIC_PIN_1;
+    eicCallbackObject[2].eicPinNo = EIC_PIN_2;
     eicCallbackObject[3].eicPinNo = EIC_PIN_MAX;
     eicCallbackObject[4].eicPinNo = EIC_PIN_MAX;
     eicCallbackObject[5].eicPinNo = EIC_PIN_MAX;
     eicCallbackObject[6].eicPinNo = EIC_PIN_MAX;
-    eicCallbackObject[7].eicPinNo = EIC_PIN_MAX;
-    eicCallbackObject[8].eicPinNo = EIC_PIN_MAX;
-    eicCallbackObject[9].eicPinNo = EIC_PIN_MAX;
+    eicCallbackObject[7].eicPinNo = EIC_PIN_7;
+    eicCallbackObject[8].eicPinNo = EIC_PIN_8;
+    eicCallbackObject[9].eicPinNo = EIC_PIN_9;
     eicCallbackObject[10].eicPinNo = EIC_PIN_10;
     eicCallbackObject[11].eicPinNo = EIC_PIN_11;
     eicCallbackObject[12].eicPinNo = EIC_PIN_MAX;
@@ -155,6 +155,66 @@ void EIC_CallbackRegister(EIC_PIN pin, EIC_CALLBACK callback, uintptr_t context)
     }
 }
 
+void __attribute__((used)) EIC_EXTINT_1_InterruptHandler(void)
+{
+    /* Clear interrupt flag */
+    EIC_REGS->EIC_INTFLAG = (1UL << 1);
+    /* Find any associated callback entries in the callback table */
+    if ((eicCallbackObject[1].callback != NULL))
+    {
+        uintptr_t context = eicCallbackObject[1].context;
+        eicCallbackObject[1].callback(context);
+    }
+
+}
+void __attribute__((used)) EIC_EXTINT_2_InterruptHandler(void)
+{
+    /* Clear interrupt flag */
+    EIC_REGS->EIC_INTFLAG = (1UL << 2);
+    /* Find any associated callback entries in the callback table */
+    if ((eicCallbackObject[2].callback != NULL))
+    {
+        uintptr_t context = eicCallbackObject[2].context;
+        eicCallbackObject[2].callback(context);
+    }
+
+}
+void __attribute__((used)) EIC_EXTINT_7_InterruptHandler(void)
+{
+    /* Clear interrupt flag */
+    EIC_REGS->EIC_INTFLAG = (1UL << 7);
+    /* Find any associated callback entries in the callback table */
+    if ((eicCallbackObject[7].callback != NULL))
+    {
+        uintptr_t context = eicCallbackObject[7].context;
+        eicCallbackObject[7].callback(context);
+    }
+
+}
+void __attribute__((used)) EIC_EXTINT_8_InterruptHandler(void)
+{
+    /* Clear interrupt flag */
+    EIC_REGS->EIC_INTFLAG = (1UL << 8);
+    /* Find any associated callback entries in the callback table */
+    if ((eicCallbackObject[8].callback != NULL))
+    {
+        uintptr_t context = eicCallbackObject[8].context;
+        eicCallbackObject[8].callback(context);
+    }
+
+}
+void __attribute__((used)) EIC_EXTINT_9_InterruptHandler(void)
+{
+    /* Clear interrupt flag */
+    EIC_REGS->EIC_INTFLAG = (1UL << 9);
+    /* Find any associated callback entries in the callback table */
+    if ((eicCallbackObject[9].callback != NULL))
+    {
+        uintptr_t context = eicCallbackObject[9].context;
+        eicCallbackObject[9].callback(context);
+    }
+
+}
 void __attribute__((used)) EIC_EXTINT_10_InterruptHandler(void)
 {
     /* Clear interrupt flag */

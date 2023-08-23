@@ -51,8 +51,8 @@ Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,D
 60,PC20,,Available,,,,,,NORMAL
 61,PC21,,Available,,,,,,NORMAL
 64,PB16,,Available,,,,,,NORMAL
-65,PB17,,Available,,,,,,NORMAL
-66,PB18,,Available,,,,,,NORMAL
+65,PB17,EMERGENCY_BUT,EIC_EXTINT1,Digital,High Impedance,n/a,No,Yes,NORMAL
+66,PB18,,EIC_EXTINT2,Digital,High Impedance,n/a,No,Yes,NORMAL
 67,PB19,,Available,,,,,,NORMAL
 68,PB20,,SERCOM7_PAD1,Digital,High Impedance,n/a,No,No,NORMAL
 69,PB21,,SERCOM7_PAD0,Digital,High Impedance,n/a,No,No,NORMAL
@@ -63,9 +63,9 @@ Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,D
 74,PA24,,Available,,,,,,NORMAL
 75,PA25,,Available,,,,,,NORMAL
 78,PB22,,Available,,,,,,NORMAL
-79,PB23,,Available,,,,,,NORMAL
-80,PB24,,Available,,,,,,NORMAL
-81,PB25,,Available,,,,,,NORMAL
+79,PB23,,EIC_EXTINT7,Digital,High Impedance,n/a,No,No,NORMAL
+80,PB24,,EIC_EXTINT8,Digital,High Impedance,n/a,No,No,NORMAL
+81,PB25,LIMIT_BTN,EIC_EXTINT9,Digital,High Impedance,n/a,No,Yes,NORMAL
 82,PC24,,Available,,,,,,NORMAL
 83,PC25,,Available,,,,,,NORMAL
 84,PC26,,Available,,,,,,NORMAL

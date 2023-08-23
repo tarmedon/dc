@@ -65,6 +65,14 @@
 // *****************************************************************************
 // *****************************************************************************
 
+/*** Macros for EMERGENCY_BUT pin ***/
+#define EMERGENCY_BUT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 17U)) & 0x01U)
+#define EMERGENCY_BUT_PIN                  PORT_PIN_PB17
+
+/*** Macros for LIMIT_BTN pin ***/
+#define LIMIT_BTN_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 25U)) & 0x01U)
+#define LIMIT_BTN_PIN                  PORT_PIN_PB25
+
 // *****************************************************************************
 /* PORT Group
 
