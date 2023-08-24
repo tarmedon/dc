@@ -110,7 +110,6 @@ TaskHandle_t defaultTaskHandle;                     //default task HANDLE
 TaskHandle_t TEMP_HUMI_TaskHandle;                  //HUMIDITY TEMPERATURE HANDLE
 TaskHandle_t TEMP_ADC_TaskHandle;                   //TEMPERATURE HANDLE
 TaskHandle_t GUN_TEMP_TaskHandle;                   //GUN TEMPERATURE HANDLE
-TaskHandle_t SMOKE_SENSE_TaskHandle;                //SMOKE SENSOR HANDLE
 TaskHandle_t MACHINE_STATEHandle;                   //MACHINE STATE HANDLE
 
 
@@ -129,7 +128,6 @@ void StartDefaultTask(void * argument);             //Default TASK Function
 void StartTEMP_HUMITask(void * argument);           //Humidity Temperature TASK Function
 void StartTEMP_ADCTask(void * argument);            //Temperature ADC TASK Function
 void StartGUN_TEMPTask(void * argument);            //GUN Temperature TASK Function
-void StartSMOKE_SENSETask(void * argument);         //SMOKE_SENSOR TASK Function
 void StartMACHINE_STATETask(void * argument);       //MACHINE STATE TASK Function
 
 /**ESP RELATED TASKS FUNCTIONS, VARIABLES & CALLBACKS**/
@@ -189,7 +187,6 @@ int main ( void )
     xTaskCreate(StartGUN_TEMPTask,"StartGUN_TEMPTask",128,NULL,1,&GUN_TEMP_TaskHandle);                                     //GUN TEMP TASK CREATION
     xTaskCreate(StartHMI_RECEIVETask,"StartHMI_RECEIVETask",512,NULL,1,&HMI_RECEIVE_TaskHandle);                            //HMI RECEIVE TASK CREATION
     xTaskCreate(StartHMI_SENDTask,"StartHMI_RECEIVETask",512,NULL,1,&HMI_SEND_TaskHandle);                                  //HMIO SEND TASK CREATION
-    xTaskCreate(StartSMOKE_SENSETask,"StartSMOKE_SENSETask",128,NULL,1,&SMOKE_SENSE_TaskHandle);                            //SMOKE SENSING TASK CREATION
     xTaskCreate(StartMACHINE_STATETask,"StartMACHINE_STATETask",128,NULL,1,&MACHINE_STATEHandle);                           //MACHINE STATE TASK CREATION
             
     /**ENABLING SERCOM Intruppt with their receiving size**/
@@ -207,7 +204,6 @@ int main ( void )
     vTaskSuspend(GUN_TEMP_TaskHandle);                                      //GUN TEMPERATURE TASK SUSPENDED
     vTaskSuspend(HMI_RECEIVE_TaskHandle);                                   //HMI RECEIVE TASK SUSPENDED
     vTaskSuspend(HMI_SEND_TaskHandle);                                      //HMI SEND TASK SUSPENDED
-    vTaskSuspend(SMOKE_SENSE_TaskHandle);                                   //SMOKE SENSING TASK SUSPENDED
     vTaskSuspend(MACHINE_STATEHandle);                                      //MACHINE STATE TASK SUSPENDED
     
     /**STARTING SCHEDULER**/
@@ -277,16 +273,35 @@ static void EMERGENCY_BTN(uintptr_t context)
 static void IMD_NOTIFICATION(uintptr_t context)
 {
     //TODO : Notify to esp, HMI , PLC and change system state.
-    printf("IMD HIGH\r\n");
-    Imd_t = NOT_OK;
+    printf("IMD DETECTED\r\n");
+    if(IMD_RESPONSE_Get())                          //Condition for check voltage level IMD GPIO 
+    {
+        Imd_t = NOT_OK;                             //Setting IMD FLAG to NOT_OK.
+        printf("IMD PIN HIGH\r\n");
+    }
+    else
+    {
+        Imd_t = OK;                                 //Setting IMD FLAG to OK.
+        printf("IMD PIN LOW\r\n");
+    }
+    
 }
 
 /**CALLBACK FUNCTION FOR SMOKE DETECTION**/
 static void SMOKE_DETECTION(uintptr_t context)
 {
     //TODO : Notify to esp, HMI & change state of SYSTEM by suspending requried task and changig machine state. Also change LED status
-    printf("SMOKE DETECTED\r\n");  
-    Smoke_Detection_t = OK;
+    printf("SMOKE DETECTED\r\n");
+    if(SMOKE_RESPONSE_Get())                        //Condition to check voltage level of SMOKE GPIO PIN.
+    {
+        Smoke_Detection_t = NOT_OK;                 //Setting SMOKE Detected flag to NOT_OK.
+        printf("SMOKE PIN HIGH\r\n");
+    }
+    else
+    {
+        Smoke_Detection_t = OK;                     //Setting SMOKE Detected flag to OK.
+        printf("SMOKE PIN LOW\r\n");
+    }
 }
 
 /**CALLBACK FUNCTION FOR LIMIT SWITCH**/
@@ -477,12 +492,5 @@ void StartHMI_SENDTask(void * argument)
 }
 
 
-/**Function for SMOKE SENSING TASK**/
-void StartSMOKE_SENSETask(void * argument)
-{
-    while(1)
-    {
-        vTaskDelay(100);
-    }    
-}
+
 

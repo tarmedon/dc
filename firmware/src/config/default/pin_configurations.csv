@@ -63,8 +63,8 @@ Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,D
 74,PA24,,Available,,,,,,NORMAL
 75,PA25,,Available,,,,,,NORMAL
 78,PB22,,Available,,,,,,NORMAL
-79,PB23,,EIC_EXTINT7,Digital,High Impedance,n/a,No,No,NORMAL
-80,PB24,,EIC_EXTINT8,Digital,High Impedance,n/a,No,No,NORMAL
+79,PB23,IMD_RESPONSE,EIC_EXTINT7,Digital,High Impedance,n/a,No,Yes,NORMAL
+80,PB24,SMOKE_RESPONSE,EIC_EXTINT8,Digital,High Impedance,n/a,No,Yes,NORMAL
 81,PB25,LIMIT_BTN,EIC_EXTINT9,Digital,High Impedance,n/a,No,Yes,NORMAL
 82,PC24,,Available,,,,,,NORMAL
 83,PC25,,Available,,,,,,NORMAL

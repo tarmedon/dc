@@ -69,6 +69,14 @@
 #define EMERGENCY_BUT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 17U)) & 0x01U)
 #define EMERGENCY_BUT_PIN                  PORT_PIN_PB17
 
+/*** Macros for IMD_RESPONSE pin ***/
+#define IMD_RESPONSE_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 23U)) & 0x01U)
+#define IMD_RESPONSE_PIN                  PORT_PIN_PB23
+
+/*** Macros for SMOKE_RESPONSE pin ***/
+#define SMOKE_RESPONSE_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 24U)) & 0x01U)
+#define SMOKE_RESPONSE_PIN                  PORT_PIN_PB24
+
 /*** Macros for LIMIT_BTN pin ***/
 #define LIMIT_BTN_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 25U)) & 0x01U)
 #define LIMIT_BTN_PIN                  PORT_PIN_PB25
