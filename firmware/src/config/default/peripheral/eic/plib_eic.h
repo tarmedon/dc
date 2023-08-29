@@ -103,6 +103,12 @@
     /* External Interrupt Controller Pin 2 */
 #define    EIC_PIN_2   (2U)
 
+    /* External Interrupt Controller Pin 5 */
+#define    EIC_PIN_5   (5U)
+
+    /* External Interrupt Controller Pin 6 */
+#define    EIC_PIN_6   (6U)
+
     /* External Interrupt Controller Pin 7 */
 #define    EIC_PIN_7   (7U)
 

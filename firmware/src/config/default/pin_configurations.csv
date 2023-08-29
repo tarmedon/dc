@@ -1,12 +1,12 @@
 Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,Drive Strength
-1,PA00,,Available,,,,,,NORMAL
-2,PA01,,Available,,,,,,NORMAL
+1,PA00,,SERCOM1_PAD0,Digital,High Impedance,n/a,No,No,NORMAL
+2,PA01,,SERCOM1_PAD1,Digital,High Impedance,n/a,No,No,NORMAL
 3,PC00,,Available,,,,,,NORMAL
 4,PC01,,Available,,,,,,NORMAL
 5,PC02,,Available,,,,,,NORMAL
 6,PC03,,Available,,,,,,NORMAL
-7,PA02,,Available,,,,,,NORMAL
-8,PA03,,Available,,,,,,NORMAL
+7,PA02,,ADC0_AIN0,Analog,High Impedance,n/a,,,NORMAL
+8,PA03,,ADC0_AIN1/X0/Y0/VREFA,Analog,High Impedance,n/a,,,NORMAL
 9,PB04,,Available,,,,,,NORMAL
 10,PB05,,Available,,,,,,NORMAL
 13,PB06,,Available,,,,,,NORMAL
@@ -15,22 +15,22 @@ Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,D
 16,PB09,,Available,,,,,,NORMAL
 17,PA04,,Available,,,,,,NORMAL
 18,PA05,,Available,,,,,,NORMAL
-19,PA06,,Available,,,,,,NORMAL
-20,PA07,,Available,,,,,,NORMAL
-21,PC05,,Available,,,,,,NORMAL
-22,PC06,,Available,,,,,,NORMAL
+19,PA06,,TC1_WO0,Digital,High Impedance,n/a,No,No,NORMAL
+20,PA07,,TC1_WO1,Digital,High Impedance,n/a,No,No,NORMAL
+21,PC05,RGB1_AVAILABLITY,EIC_EXTINT5,Digital,High Impedance,n/a,No,No,NORMAL
+22,PC06,RGB2_AVAILABLITY,EIC_EXTINT6,Digital,High Impedance,n/a,No,No,NORMAL
 23,PC07,,Available,,,,,,NORMAL
-26,PA08,,Available,,,,,,NORMAL
+26,PA08,,TC0_WO0,Digital,High Impedance,n/a,No,No,NORMAL
 27,PA09,,Available,,,,,,NORMAL
 28,PA10,,Available,,,,,,NORMAL
 29,PA11,,Available,,,,,,NORMAL
-32,PB10,,Available,,,,,,NORMAL
-33,PB11,,Available,,,,,,NORMAL
+32,PB10,,TC5_WO0,Digital,High Impedance,n/a,No,No,NORMAL
+33,PB11,,TC5_WO1,Digital,High Impedance,n/a,No,No,NORMAL
 34,PB12,,Available,,,,,,NORMAL
 35,PB13,,Available,,,,,,NORMAL
-36,PB14,,Available,,,,,,NORMAL
+36,PB14,,TCC4_WO0,Digital,High Impedance,n/a,No,No,NORMAL
 37,PB15,,Available,,,,,,NORMAL
-40,PC10,,EIC_EXTINT10,Digital,High Impedance,n/a,No,No,NORMAL
+40,PC10,PHASE_VALUE,EIC_EXTINT10,Digital,High Impedance,n/a,No,No,NORMAL
 41,PC11,,EIC_EXTINT11,Digital,High Impedance,n/a,No,No,NORMAL
 42,PC12,,Available,,,,,,NORMAL
 43,PC13,,Available,,,,,,NORMAL
@@ -46,13 +46,13 @@ Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,D
 55,PA19,,Available,,,,,,NORMAL
 56,PC16,,SERCOM6_PAD0,Digital,High Impedance,n/a,No,No,NORMAL
 57,PC17,,SERCOM6_PAD1,Digital,High Impedance,n/a,No,No,NORMAL
-58,PC18,,Available,,,,,,NORMAL
+58,PC18,POWER_BANK_RELAY,GPIO,Digital,Out,Low,,,NORMAL
 59,PC19,,Available,,,,,,NORMAL
 60,PC20,,Available,,,,,,NORMAL
 61,PC21,,Available,,,,,,NORMAL
 64,PB16,,Available,,,,,,NORMAL
 65,PB17,EMERGENCY_BUT,EIC_EXTINT1,Digital,High Impedance,n/a,No,Yes,NORMAL
-66,PB18,,EIC_EXTINT2,Digital,High Impedance,n/a,No,Yes,NORMAL
+66,PB18,SPD_RESPONSE,EIC_EXTINT2,Digital,High Impedance,n/a,No,Yes,NORMAL
 67,PB19,,Available,,,,,,NORMAL
 68,PB20,,SERCOM7_PAD1,Digital,High Impedance,n/a,No,No,NORMAL
 69,PB21,,SERCOM7_PAD0,Digital,High Impedance,n/a,No,No,NORMAL

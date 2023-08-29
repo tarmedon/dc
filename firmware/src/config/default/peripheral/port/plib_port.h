@@ -65,9 +65,34 @@
 // *****************************************************************************
 // *****************************************************************************
 
+/*** Macros for RGB1_AVAILABLITY pin ***/
+#define RGB1_AVAILABLITY_Get()               (((PORT_REGS->GROUP[2].PORT_IN >> 5U)) & 0x01U)
+#define RGB1_AVAILABLITY_PIN                  PORT_PIN_PC05
+
+/*** Macros for RGB2_AVAILABLITY pin ***/
+#define RGB2_AVAILABLITY_Get()               (((PORT_REGS->GROUP[2].PORT_IN >> 6U)) & 0x01U)
+#define RGB2_AVAILABLITY_PIN                  PORT_PIN_PC06
+
+/*** Macros for PHASE_VALUE pin ***/
+#define PHASE_VALUE_Get()               (((PORT_REGS->GROUP[2].PORT_IN >> 10U)) & 0x01U)
+#define PHASE_VALUE_PIN                  PORT_PIN_PC10
+
+/*** Macros for POWER_BANK_RELAY pin ***/
+#define POWER_BANK_RELAY_Set()               (PORT_REGS->GROUP[2].PORT_OUTSET = ((uint32_t)1U << 18U))
+#define POWER_BANK_RELAY_Clear()             (PORT_REGS->GROUP[2].PORT_OUTCLR = ((uint32_t)1U << 18U))
+#define POWER_BANK_RELAY_Toggle()            (PORT_REGS->GROUP[2].PORT_OUTTGL = ((uint32_t)1U << 18U))
+#define POWER_BANK_RELAY_OutputEnable()      (PORT_REGS->GROUP[2].PORT_DIRSET = ((uint32_t)1U << 18U))
+#define POWER_BANK_RELAY_InputEnable()       (PORT_REGS->GROUP[2].PORT_DIRCLR = ((uint32_t)1U << 18U))
+#define POWER_BANK_RELAY_Get()               (((PORT_REGS->GROUP[2].PORT_IN >> 18U)) & 0x01U)
+#define POWER_BANK_RELAY_PIN                  PORT_PIN_PC18
+
 /*** Macros for EMERGENCY_BUT pin ***/
 #define EMERGENCY_BUT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 17U)) & 0x01U)
 #define EMERGENCY_BUT_PIN                  PORT_PIN_PB17
+
+/*** Macros for SPD_RESPONSE pin ***/
+#define SPD_RESPONSE_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 18U)) & 0x01U)
+#define SPD_RESPONSE_PIN                  PORT_PIN_PB18
 
 /*** Macros for IMD_RESPONSE pin ***/
 #define IMD_RESPONSE_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 23U)) & 0x01U)

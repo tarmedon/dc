@@ -64,6 +64,10 @@ void NVIC_Initialize( void )
     NVIC_EnableIRQ(EIC_EXTINT_1_IRQn);
     NVIC_SetPriority(EIC_EXTINT_2_IRQn, 7);
     NVIC_EnableIRQ(EIC_EXTINT_2_IRQn);
+    NVIC_SetPriority(EIC_EXTINT_5_IRQn, 7);
+    NVIC_EnableIRQ(EIC_EXTINT_5_IRQn);
+    NVIC_SetPriority(EIC_EXTINT_6_IRQn, 7);
+    NVIC_EnableIRQ(EIC_EXTINT_6_IRQn);
     NVIC_SetPriority(EIC_EXTINT_7_IRQn, 7);
     NVIC_EnableIRQ(EIC_EXTINT_7_IRQn);
     NVIC_SetPriority(EIC_EXTINT_8_IRQn, 7);
@@ -74,6 +78,14 @@ void NVIC_Initialize( void )
     NVIC_EnableIRQ(EIC_EXTINT_10_IRQn);
     NVIC_SetPriority(EIC_EXTINT_11_IRQn, 7);
     NVIC_EnableIRQ(EIC_EXTINT_11_IRQn);
+    NVIC_SetPriority(SERCOM1_0_IRQn, 7);
+    NVIC_EnableIRQ(SERCOM1_0_IRQn);
+    NVIC_SetPriority(SERCOM1_1_IRQn, 7);
+    NVIC_EnableIRQ(SERCOM1_1_IRQn);
+    NVIC_SetPriority(SERCOM1_2_IRQn, 7);
+    NVIC_EnableIRQ(SERCOM1_2_IRQn);
+    NVIC_SetPriority(SERCOM1_OTHER_IRQn, 7);
+    NVIC_EnableIRQ(SERCOM1_OTHER_IRQn);
     NVIC_SetPriority(SERCOM2_0_IRQn, 7);
     NVIC_EnableIRQ(SERCOM2_0_IRQn);
     NVIC_SetPriority(SERCOM2_1_IRQn, 7);
